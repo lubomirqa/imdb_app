@@ -4,8 +4,8 @@ import javax.swing.*;
 
 public class Main {
 
-  private static int TABLE_WIDTH = 500;
-  private static int TABLE_HEIGHT = 400;
+  private static int TABLE_WIDTH = 600;
+  private static int TABLE_HEIGHT = 500;
 
   public static void main(String[] args) {
 

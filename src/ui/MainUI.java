@@ -9,7 +9,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ public class MainUI {
   private JLabel genre;
   private JComboBox typesDropdown;
   private JTextField minVotes;
+  private JTextField searchField;
+  private JLabel searchLabel;
 
   public JPanel getRootPanel(){
     return rootPanel;
@@ -32,10 +35,10 @@ public class MainUI {
   public MainUI(){
     createGenresDropdown();
     createMovieTypesDropdown();
+    createSearch();
     createMinVotesField();
     createTable();
     showMovies();
-
   }
 
   private void showMovies(){
@@ -56,11 +59,27 @@ public class MainUI {
     }
   }
 
+  private void searchMovies(){
+    String title = (String) searchField.getText();
+    ArrayList<Movie> movies = Movie.searchMovie(title);
+    DefaultTableModel model = (DefaultTableModel) movieTable.getModel();
+
+    model.setRowCount(0);
+    for(Movie movie : movies){
+      model.addRow(new Object[]{
+              movie.getPrimaryTitle(),
+              movie.getAverageRating(),
+              movie.getStartYear(),
+              movie.getNumVotes()
+      });
+    }
+  }
+
   private void createTable() {
 
     movieTable.setModel(new DefaultTableModel(
             null,
-            new String[]{"Title", "Year", "Rating", "Num Votes"}
+            new String[]{"Title", "Rating", "Year", "Votes"}
     ));
 
     TableColumnModel columns = movieTable.getColumnModel();
@@ -116,4 +135,26 @@ public class MainUI {
       }
     });
   }
+
+  private void createSearch(){
+
+    searchField.getDocument().addDocumentListener(new DocumentListener() {
+      @Override
+      public void insertUpdate(DocumentEvent e) {
+        searchMovies();
+      }
+
+      @Override
+      public void removeUpdate(DocumentEvent e) {
+        searchMovies();
+      }
+
+      @Override
+      public void changedUpdate(DocumentEvent e) {
+        searchMovies();
+      }
+    });
+  }
+
+
 }

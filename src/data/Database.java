@@ -17,15 +17,21 @@ public class Database {
   private static String GET_ALL_GENRES_SQL = "SELECT DISTINCT RTRIM(genre) AS genre FROM title_genre";
   private static String GET_ALL_TYPES_SQL = "SELECT DISTINCT RTRIM(titleType) AS titleType FROM title_basics";
 
-  private static String FIND_SHOWS_SQL = "SELECT TOP 50 primaryTitle, startYear, averageRating, numVotes\n" +
+  private static String FIND_MOVIES_SQL = "SELECT TOP 50 primaryTitle, startYear, averageRating, numVotes\n" +
           "FROM title_basics\n" +
           "JOIN title_ratings ON title_basics.tconst = title_ratings.tconst\n" +
           "JOIN title_genre ON title_basics.tconst = title_genre.tconst\n" +
           "WHERE numVotes > ?\n" +
           "AND titleType = ?\n" +
           "AND genre = ?\n" +
-          "ORDER BY averageRating DESC"
-          ;
+          "ORDER BY averageRating DESC";
+
+  private static String SEARCH_BY_NAME_SQL = "SELECT DISTINCT TOP 50 primaryTitle, startYear, averageRating, numVotes\n" +
+          "FROM title_basics\n" +
+          "JOIN title_ratings ON title_basics.tconst = title_ratings.tconst\n" +
+          "JOIN title_genre ON title_basics.tconst = title_genre.tconst\n" +
+          "WHERE primaryTitle = ?\n" +
+          "ORDER BY averageRating DESC";
 
 
   public static void connect(){
@@ -78,7 +84,7 @@ public class Database {
     ArrayList<Movie> movies = new ArrayList<>();
 
     try {
-      PreparedStatement stmt = connection.prepareStatement(FIND_SHOWS_SQL);
+      PreparedStatement stmt = connection.prepareStatement(FIND_MOVIES_SQL);
       stmt.setInt(1, minMovies);
       stmt.setString(2, titleType);
       stmt.setString(3, genre);
@@ -89,6 +95,28 @@ public class Database {
                 result.getInt("startYear"),
                 result.getFloat("averageRating"),
                 result.getInt("numVotes")
+                )
+        );
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return movies;
+  }
+
+  public static ArrayList<Movie> searchMovie(String title){
+    connect();
+    ArrayList<Movie> movies = new ArrayList<>();
+
+    try {
+      PreparedStatement stmt = connection.prepareStatement(SEARCH_BY_NAME_SQL);
+      stmt.setString(1, title);
+      ResultSet result = stmt.executeQuery();
+      while (result.next()) {
+        movies.add(new Movie(result.getString("primaryTitle"),
+                        result.getInt("startYear"),
+                        result.getFloat("averageRating"),
+                        result.getInt("numVotes")
                 )
         );
       }

@@ -21,6 +21,10 @@ public class Movie {
     return Database.findMovies(minMovies, titleType, genre);
   }
 
+  public static ArrayList<Movie> searchMovie(String title){
+    return Database.searchMovie(title);
+  }
+
   public String getPrimaryTitle() {
     return primaryTitle;
   }
