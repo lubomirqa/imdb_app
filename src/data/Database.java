@@ -1,6 +1,7 @@
 package data;
 
 import logic.Genre;
+import logic.Movie;
 import logic.MovieType;
 
 import java.sql.*;
@@ -13,8 +14,18 @@ public class Database {
   private static String CONN_STRING = "jdbc:jtds:sqlserver://cisdbss.pcc.edu/IMDB";
   private static String USERNAME = "275student";
   private static String PASSWORD = "275student";
-  private static String GET_ALL_GENRES_SQL = "SELECT DISTINCT genre FROM title_genre";
-  private static String GET_ALL_TYPES_SQL = "SELECT DISTINCT titleType FROM title_basics";
+  private static String GET_ALL_GENRES_SQL = "SELECT DISTINCT RTRIM(genre) AS genre FROM title_genre";
+  private static String GET_ALL_TYPES_SQL = "SELECT DISTINCT RTRIM(titleType) AS titleType FROM title_basics";
+
+  private static String FIND_SHOWS_SQL = "SELECT TOP 50 primaryTitle, startYear, averageRating, numVotes\n" +
+          "FROM title_basics\n" +
+          "JOIN title_ratings ON title_basics.tconst = title_ratings.tconst\n" +
+          "JOIN title_genre ON title_basics.tconst = title_genre.tconst\n" +
+          "WHERE numVotes > ?\n" +
+          "AND titleType = ?\n" +
+          "AND genre = ?\n" +
+          "ORDER BY averageRating DESC"
+          ;
 
 
   public static void connect(){
@@ -60,5 +71,30 @@ public class Database {
       e.printStackTrace();
     }
     return types;
+  }
+
+  public static ArrayList<Movie> findMovies(Integer minMovies, String titleType, String genre){
+    connect();
+    ArrayList<Movie> movies = new ArrayList<>();
+
+    try {
+      PreparedStatement stmt = connection.prepareStatement(FIND_SHOWS_SQL);
+      stmt.setInt(1, minMovies);
+      stmt.setString(2, titleType);
+      stmt.setString(3, genre);
+      ResultSet result = stmt.executeQuery();
+      while(result.next()){
+        //primaryTitle, startYear, averageRating, numVotes
+        movies.add(new Movie(result.getString("primaryTitle"),
+                result.getInt("startYear"),
+                result.getFloat("averageRating"),
+                result.getInt("numVotes")
+                )
+        );
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return movies;
   }
 }
