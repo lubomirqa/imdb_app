@@ -9,10 +9,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import java.awt.event.InputMethodEvent;
-import java.awt.event.InputMethodListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 public class MainUI {
@@ -27,12 +25,16 @@ public class MainUI {
   private JTextField minVotes;
   private JTextField searchField;
   private JLabel searchLabel;
+  private JMenuBar menuBar;
+  private JMenu menu;
+  private JMenuItem menuItem;
 
   public JPanel getRootPanel(){
     return rootPanel;
   }
 
   public MainUI(){
+    createMenu();
     createGenresDropdown();
     createMovieTypesDropdown();
     createSearch();
@@ -155,6 +157,25 @@ public class MainUI {
       }
     });
   }
+
+  private void createMenu(){
+
+    System.setProperty("apple.laf.useScreenMenuBar", "true");
+
+    menuBar = new JMenuBar();
+
+    menu = new JMenu("Menu");
+    menu.setMnemonic(KeyEvent.VK_A);
+    menu.getAccessibleContext().setAccessibleDescription("Menu Description");
+
+    menuItem = new JMenuItem("File");
+    menu.add(menuItem);
+
+    menuBar.add(menu);
+
+
+  }
+
 
 
 }
