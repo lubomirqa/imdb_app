@@ -9,7 +9,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
@@ -41,6 +40,7 @@ public class MainUI {
     createMinVotesField();
     createTable();
     showMovies();
+    //showAllMovies();
   }
 
   private void showMovies(){
@@ -61,9 +61,9 @@ public class MainUI {
     }
   }
 
-  private void searchMovies(){
+  /*private void searchMovies(){
     String title = (String) searchField.getText();
-    ArrayList<Movie> movies = Movie.searchMovie(title);
+    ArrayList<Movie> movies = Movie.findMovies(title);
     DefaultTableModel model = (DefaultTableModel) movieTable.getModel();
 
     model.setRowCount(0);
@@ -75,7 +75,7 @@ public class MainUI {
               movie.getNumVotes()
       });
     }
-  }
+  }*/
 
   private void createTable() {
 
@@ -143,17 +143,20 @@ public class MainUI {
     searchField.getDocument().addDocumentListener(new DocumentListener() {
       @Override
       public void insertUpdate(DocumentEvent e) {
-        searchMovies();
+        //searchMovies();
+        showAllMovies();
       }
 
       @Override
       public void removeUpdate(DocumentEvent e) {
-        searchMovies();
+        //searchMovies();
+        showAllMovies();
       }
 
       @Override
       public void changedUpdate(DocumentEvent e) {
-        searchMovies();
+        //searchMovies();
+        showAllMovies();
       }
     });
   }
@@ -173,9 +176,25 @@ public class MainUI {
 
     menuBar.add(menu);
 
-
   }
 
+  private void showAllMovies(){
+    String title = searchField.getText();
+    Integer minMovies = Integer.parseInt(minVotes.getText());
+    String titleType = (String) typesDropdown.getSelectedItem();
+    String genre = (String) genreDropdown.getSelectedItem();
+    ArrayList<Movie> movies = Movie.findMovies(title, minMovies, titleType, genre);
+    DefaultTableModel model = (DefaultTableModel)movieTable.getModel();
 
+    model.setRowCount(0);
+    for(Movie movie : movies){
+      model.addRow(new Object[]{
+              movie.getPrimaryTitle(),
+              movie.getAverageRating(),
+              movie.getStartYear(),
+              movie.getNumVotes()
+      });
+    }
+  }
 
 }
