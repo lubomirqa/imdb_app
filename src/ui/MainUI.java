@@ -23,7 +23,7 @@ public class MainUI {
   private JComboBox typesDropdown;
   private JTextField minVotes;
   private JTextField searchField;
-  private JLabel searchLabel;
+  private JButton searchButton;
   private JMenuBar menuBar;
   private JMenu menu;
   private JMenuItem menuItem;
@@ -40,7 +40,6 @@ public class MainUI {
     createMinVotesField();
     createTable();
     showMovies();
-    //showAllMovies();
   }
 
   private void showMovies(){
@@ -60,22 +59,6 @@ public class MainUI {
       });
     }
   }
-
-  /*private void searchMovies(){
-    String title = (String) searchField.getText();
-    ArrayList<Movie> movies = Movie.findMovies(title);
-    DefaultTableModel model = (DefaultTableModel) movieTable.getModel();
-
-    model.setRowCount(0);
-    for(Movie movie : movies){
-      model.addRow(new Object[]{
-              movie.getPrimaryTitle(),
-              movie.getAverageRating(),
-              movie.getStartYear(),
-              movie.getNumVotes()
-      });
-    }
-  }*/
 
   private void createTable() {
 
@@ -139,23 +122,9 @@ public class MainUI {
   }
 
   private void createSearch(){
-
-    searchField.getDocument().addDocumentListener(new DocumentListener() {
+    searchButton.addActionListener(new ActionListener() {
       @Override
-      public void insertUpdate(DocumentEvent e) {
-        //searchMovies();
-        showAllMovies();
-      }
-
-      @Override
-      public void removeUpdate(DocumentEvent e) {
-        //searchMovies();
-        showAllMovies();
-      }
-
-      @Override
-      public void changedUpdate(DocumentEvent e) {
-        //searchMovies();
+      public void actionPerformed(ActionEvent e) {
         showAllMovies();
       }
     });
