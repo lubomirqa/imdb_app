@@ -24,40 +24,19 @@ public class MainUI {
   private JTextField minVotes;
   private JTextField searchField;
   private JButton searchButton;
-  private JMenuBar menuBar;
-  private JMenu menu;
-  private JMenuItem menuItem;
+
 
   public JPanel getRootPanel(){
     return rootPanel;
   }
 
   public MainUI(){
-    createMenu();
     createGenresDropdown();
     createMovieTypesDropdown();
     createSearch();
     createMinVotesField();
     createTable();
     showMovies();
-  }
-
-  private void showMovies(){
-    Integer minMovies = Integer.parseInt(minVotes.getText());
-    String titleType = (String) typesDropdown.getSelectedItem();
-    String genre = (String) genreDropdown.getSelectedItem();
-    ArrayList<Movie> movies = Movie.findMovies(minMovies, titleType, genre);
-    DefaultTableModel model = (DefaultTableModel)movieTable.getModel();
-
-    model.setRowCount(0);
-    for(Movie movie : movies){
-      model.addRow(new Object[]{
-              movie.getPrimaryTitle(),
-              movie.getAverageRating(),
-              movie.getStartYear(),
-              movie.getNumVotes()
-      });
-    }
   }
 
   private void createTable() {
@@ -130,21 +109,22 @@ public class MainUI {
     });
   }
 
-  private void createMenu(){
+  private void showMovies(){
+    Integer minMovies = Integer.parseInt(minVotes.getText());
+    String titleType = (String) typesDropdown.getSelectedItem();
+    String genre = (String) genreDropdown.getSelectedItem();
+    ArrayList<Movie> movies = Movie.findMovies(minMovies, titleType, genre);
+    DefaultTableModel model = (DefaultTableModel)movieTable.getModel();
 
-    System.setProperty("apple.laf.useScreenMenuBar", "true");
-
-    menuBar = new JMenuBar();
-
-    menu = new JMenu("Menu");
-    menu.setMnemonic(KeyEvent.VK_A);
-    menu.getAccessibleContext().setAccessibleDescription("Menu Description");
-
-    menuItem = new JMenuItem("File");
-    menu.add(menuItem);
-
-    menuBar.add(menu);
-
+    model.setRowCount(0);
+    for(Movie movie : movies){
+      model.addRow(new Object[]{
+              movie.getPrimaryTitle(),
+              movie.getAverageRating(),
+              movie.getStartYear(),
+              movie.getNumVotes()
+      });
+    }
   }
 
   private void showAllMovies(){
