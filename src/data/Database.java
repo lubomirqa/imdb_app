@@ -26,13 +26,6 @@ public class Database {
           "AND genre = ?\n" +
           "ORDER BY averageRating DESC";
 
-  /*private static String SEARCH_BY_NAME_SQL = "SELECT DISTINCT TOP 50 primaryTitle, startYear, averageRating, numVotes\n" +
-          "FROM title_basics\n" +
-          "JOIN title_ratings ON title_basics.tconst = title_ratings.tconst\n" +
-          "JOIN title_genre ON title_basics.tconst = title_genre.tconst\n" +
-          "WHERE primaryTitle = ?\n" +
-          "ORDER BY averageRating DESC";*/
-
   private static String SEARCH_ALL_BY_NAME_SQL = "SELECT DISTINCT TOP 50 primaryTitle, startYear, averageRating, numVotes\n" +
           "FROM title_basics\n" +
           "JOIN title_ratings ON title_basics.tconst = title_ratings.tconst\n" +
@@ -113,28 +106,6 @@ public class Database {
     }
     return movies;
   }
-
-  /*public static ArrayList<Movie> findMovies(String title){
-    connect();
-    ArrayList<Movie> movies = new ArrayList<>();
-
-    try {
-      PreparedStatement stmt = connection.prepareStatement(SEARCH_BY_NAME_SQL);
-      stmt.setString(1, title);
-      ResultSet result = stmt.executeQuery();
-      while (result.next()) {
-        movies.add(new Movie(result.getString("primaryTitle"),
-                        result.getInt("startYear"),
-                        result.getFloat("averageRating"),
-                        result.getInt("numVotes")
-                )
-        );
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    return movies;
-  }*/
 
   public static ArrayList<Movie> findMovies(String title, Integer minMovies, String titleType, String genre){
     connect();
