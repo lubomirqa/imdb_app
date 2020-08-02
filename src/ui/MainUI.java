@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainUI {
   private JPanel rootPanel;
@@ -24,6 +25,10 @@ public class MainUI {
   private JTextField minVotes;
   private JTextField searchField;
   private JButton searchButton;
+  private JButton addButton;
+  private JButton removeButton;
+
+  ArrayList<Movie> movies;
 
 
   public JPanel getRootPanel(){
@@ -37,6 +42,7 @@ public class MainUI {
     createMinVotesField();
     createTable();
     showMovies();
+    addMovies();
   }
 
   private void createTable() {
@@ -113,7 +119,7 @@ public class MainUI {
     Integer minMovies = Integer.parseInt(minVotes.getText());
     String titleType = (String) typesDropdown.getSelectedItem();
     String genre = (String) genreDropdown.getSelectedItem();
-    ArrayList<Movie> movies = Movie.findMovies(minMovies, titleType, genre);
+    movies = Movie.findMovies(minMovies, titleType, genre);
     DefaultTableModel model = (DefaultTableModel)movieTable.getModel();
 
     model.setRowCount(0);
@@ -132,7 +138,7 @@ public class MainUI {
     Integer minMovies = Integer.parseInt(minVotes.getText());
     String titleType = (String) typesDropdown.getSelectedItem();
     String genre = (String) genreDropdown.getSelectedItem();
-    ArrayList<Movie> movies = Movie.findMovies(title, minMovies, titleType, genre);
+    movies = Movie.findMovies(title, minMovies, titleType, genre);
     DefaultTableModel model = (DefaultTableModel)movieTable.getModel();
 
     model.setRowCount(0);
@@ -144,6 +150,17 @@ public class MainUI {
               movie.getNumVotes()
       });
     }
+  }
+
+  private void addMovies(){
+    addButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        System.out.println(movies.get(0).getPrimaryTitle());
+        System.out.println("movies size = " + movies.size());
+        System.out.println(Arrays.asList(movies));
+      }
+    });
   }
 
 }
