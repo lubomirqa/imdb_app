@@ -14,7 +14,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class MainUI extends GUI{
   protected JPanel rootPanel;
@@ -30,11 +29,12 @@ public class MainUI extends GUI{
   private JButton searchButton;
   protected JButton addButton;
   protected JButton removeButton;
-  private JTable userTable;
+  public JTable userTable;
   private JButton saveButton;
   private JButton openButton;
+  private JButton addAllButton;
   ArrayList<Movie> movies;
-  ArrayList<Movie> userMovis;
+  ArrayList<Movie> userMovies;
 
 
   public JPanel getRootPanel(){
@@ -52,6 +52,9 @@ public class MainUI extends GUI{
     createUserTable();
     showMovies();
     saveFile();
+    userMovies = new ArrayList<>();
+    removeMovie();
+    createUserRow();
   }
 
   private void createTable(JTable table) {
@@ -125,10 +128,19 @@ public class MainUI extends GUI{
   }
 
   private void createUserTable(){
-    addButton.addActionListener(new ActionListener() {
+    addAllButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         showUserMovies();
+      }
+    });
+  }
+
+  private void createUserRow(){
+    addButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        showUserRow();
       }
     });
   }
@@ -166,7 +178,23 @@ public class MainUI extends GUI{
     DefaultTableModel model = (DefaultTableModel)userTable.getModel();
 
     model.setRowCount(0);
-    for(Movie movie : userMovis){
+    for(Movie movie : userMovies){
+      model.addRow(new Object[]{
+              movie.getPrimaryTitle(),
+              movie.getAverageRating(),
+              movie.getStartYear(),
+              movie.getNumVotes()
+      });
+    }
+  }
+
+  private void showUserRow(){
+    addMovie();
+
+    DefaultTableModel model = (DefaultTableModel)userTable.getModel();
+
+    model.setRowCount(0);
+    for(Movie movie : userMovies){
       model.addRow(new Object[]{
               movie.getPrimaryTitle(),
               movie.getAverageRating(),
@@ -196,12 +224,33 @@ public class MainUI extends GUI{
   }
 
   private void addMovies(){
-    userMovis = new ArrayList<>();
-    System.out.println("userMovies size = " + userMovis.size());
-    System.out.println("movies size = " + movies.size());
-    System.out.println(movies.get(0).getPrimaryTitle());
     for(int i = 0; i < movies.size(); i++){
-      userMovis.add(movies.get(i));
+      userMovies.add(movies.get(i));
+    }
+  }
+
+  private void removeMovie(){
+    removeButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        removeRow();
+      }
+    });
+  }
+
+  private void addMovie(){
+    try {
+      userMovies.add(movies.get(movieTable.getSelectedRow()));
+    } catch(ArrayIndexOutOfBoundsException e){
+      JOptionPane.showMessageDialog(null, "Row not selected");
+    }
+  }
+
+  private void removeRow(){
+    try {
+      ((DefaultTableModel) userTable.getModel()).removeRow(userTable.getSelectedRow());
+    } catch(ArrayIndexOutOfBoundsException e){
+      JOptionPane.showMessageDialog(null, "Row not selected");
     }
   }
 
@@ -218,10 +267,10 @@ public class MainUI extends GUI{
           BufferedWriter bw = new BufferedWriter(fw);
 
           for(int i = 0; i < (movies.size()); i++){
-            bw.write(userMovis.get(i).getPrimaryTitle() + "/");
-            bw.write(userMovis.get(i).getAverageRating().toString() + "/");
-            bw.write(userMovis.get(i).getStartYear().toString() + "/");
-            bw.write(userMovis.get(i).getNumVotes().toString() + "/\n");
+            bw.write(userMovies.get(i).getPrimaryTitle() + "/");
+            bw.write(userMovies.get(i).getAverageRating().toString() + "/");
+            bw.write(userMovies.get(i).getStartYear().toString() + "/");
+            bw.write(userMovies.get(i).getNumVotes().toString() + "/\n");
           }
           bw.close();
           fw.close();
