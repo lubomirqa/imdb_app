@@ -30,7 +30,7 @@ public class Database {
           "FROM title_basics\n" +
           "JOIN title_ratings ON title_basics.tconst = title_ratings.tconst\n" +
           "JOIN title_genre ON title_basics.tconst = title_genre.tconst\n" +
-          "WHERE primaryTitle LIKE CONCAT('%', ?, '%')\n" +
+          "WHERE primaryTitle COLLATE SQL_Latin1_General_CP1_CI_AS LIKE CONCAT('%', ?, '%')\n" +
           "AND numVotes > ?\n" +
           "AND titleType = ?\n" +
           "AND genre = ?\n" +
