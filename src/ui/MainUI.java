@@ -14,6 +14,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainUI extends GUI{
   protected JPanel rootPanel;
@@ -33,6 +34,7 @@ public class MainUI extends GUI{
   private JButton saveButton;
   private JButton openButton;
   ArrayList<Movie> movies;
+  ArrayList<Movie> userMovis;
 
 
   public JPanel getRootPanel(){
@@ -47,6 +49,7 @@ public class MainUI extends GUI{
     createMinVotesField();
     createTable(movieTable);
     createTable(userTable);
+    createUserTable();
     showMovies();
     saveFile();
   }
@@ -121,6 +124,15 @@ public class MainUI extends GUI{
     });
   }
 
+  private void createUserTable(){
+    addButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        showUserMovies();
+      }
+    });
+  }
+
   private void createSearchKey(){
     searchField.addActionListener(new ActionListener() {
       @Override
@@ -139,6 +151,22 @@ public class MainUI extends GUI{
 
     model.setRowCount(0);
     for(Movie movie : movies){
+      model.addRow(new Object[]{
+              movie.getPrimaryTitle(),
+              movie.getAverageRating(),
+              movie.getStartYear(),
+              movie.getNumVotes()
+      });
+    }
+  }
+
+  private void showUserMovies(){
+    addMovies();
+
+    DefaultTableModel model = (DefaultTableModel)userTable.getModel();
+
+    model.setRowCount(0);
+    for(Movie movie : userMovis){
       model.addRow(new Object[]{
               movie.getPrimaryTitle(),
               movie.getAverageRating(),
@@ -167,6 +195,16 @@ public class MainUI extends GUI{
     }
   }
 
+  private void addMovies(){
+    userMovis = new ArrayList<>();
+    System.out.println("userMovies size = " + userMovis.size());
+    System.out.println("movies size = " + movies.size());
+    System.out.println(movies.get(0).getPrimaryTitle());
+    for(int i = 0; i < movies.size(); i++){
+      userMovis.add(movies.get(i));
+    }
+  }
+
   private void saveFile(){
     saveButton.addActionListener(new ActionListener() {
       @Override
@@ -180,10 +218,10 @@ public class MainUI extends GUI{
           BufferedWriter bw = new BufferedWriter(fw);
 
           for(int i = 0; i < (movies.size()); i++){
-            bw.write(movies.get(i).getPrimaryTitle() + "/");
-            bw.write(movies.get(i).getAverageRating().toString() + "/");
-            bw.write(movies.get(i).getStartYear().toString() + "/");
-            bw.write(movies.get(i).getNumVotes().toString() + "/\n");
+            bw.write(userMovis.get(i).getPrimaryTitle() + "/");
+            bw.write(userMovis.get(i).getAverageRating().toString() + "/");
+            bw.write(userMovis.get(i).getStartYear().toString() + "/");
+            bw.write(userMovis.get(i).getNumVotes().toString() + "/\n");
           }
           bw.close();
           fw.close();
@@ -195,5 +233,7 @@ public class MainUI extends GUI{
       }
     });
   }
+
+
 
 }

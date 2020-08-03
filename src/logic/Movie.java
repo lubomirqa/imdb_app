@@ -1,7 +1,6 @@
 package logic;
 
 import data.Database;
-
 import java.util.ArrayList;
 
 public class Movie {
@@ -20,10 +19,6 @@ public class Movie {
   public static ArrayList<Movie> findMovies(Integer minMovies, String titleType, String genre){
     return Database.findMovies(minMovies, titleType, genre);
   }
-
-  /*public static ArrayList<Movie> findMovies(String title){
-    return Database.findMovies(title);
-  }*/
 
   public static ArrayList<Movie> findMovies(String title, Integer minMovies, String titleType, String genre){
     return Database.findMovies(title, minMovies, titleType, genre);
