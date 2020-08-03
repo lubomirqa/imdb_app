@@ -14,13 +14,12 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MainUI extends GUI{
   protected JPanel rootPanel;
   private JLabel tableLabel;
   private JComboBox genreDropdown;
-  private JLabel search;
+  private JLabel minVotesField;
   private JTable movieTable;
   private JLabel type;
   private JLabel genre;
@@ -30,13 +29,10 @@ public class MainUI extends GUI{
   private JButton searchButton;
   protected JButton addButton;
   protected JButton removeButton;
+  private JTable userTable;
+  private JButton saveButton;
+  private JButton openButton;
   ArrayList<Movie> movies;
-
-  static private JMenuBar menuBar;
-  static private JMenu menu;
-  static protected JMenuItem openButton;
-  static protected JMenuItem saveButton;
-
 
 
   public JPanel getRootPanel(){
@@ -49,40 +45,20 @@ public class MainUI extends GUI{
     createSearch();
     createSearchKey();
     createMinVotesField();
-    createTable();
+    createTable(movieTable);
+    createTable(userTable);
     showMovies();
-    addMovies();
     saveFile();
   }
 
-  public static void createMenu(){
+  private void createTable(JTable table) {
 
-    System.setProperty("apple.laf.useScreenMenuBar", "true");
-
-    menuBar = new JMenuBar();
-
-    menu = new JMenu("File");
-    menu.setMnemonic(KeyEvent.VK_A);
-    menu.getAccessibleContext().setAccessibleDescription("Menu Description");
-
-    openButton = new JMenuItem("Open");
-    saveButton = new JMenuItem("Save");
-    menu.add(openButton);
-    menu.add(saveButton);
-
-    menuBar.add(menu);
-    frame.setJMenuBar(menuBar);
-
-  }
-
-  private void createTable() {
-
-    movieTable.setModel(new DefaultTableModel(
+    table.setModel(new DefaultTableModel(
             null,
             new String[]{"Title", "Rating", "Year", "Votes"}
     ));
 
-    TableColumnModel columns = movieTable.getColumnModel();
+    TableColumnModel columns = table.getColumnModel();
     columns.getColumn(0).setMinWidth(200);
 
   }
@@ -191,19 +167,8 @@ public class MainUI extends GUI{
     }
   }
 
-  private void addMovies(){
-    addButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        System.out.println(movies.get(0).getPrimaryTitle());
-        System.out.println("movies size = " + movies.size());
-        System.out.println(Arrays.asList(movies));
-      }
-    });
-  }
-
   private void saveFile(){
-    addButton.addActionListener(new ActionListener() {
+    saveButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         try {

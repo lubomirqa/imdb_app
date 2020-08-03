@@ -1,9 +1,6 @@
 package ui;
 
 import javax.swing.*;
-import java.awt.event.KeyEvent;
-
-import static ui.MainUI.*;
 
 public class GUI {
 
@@ -11,7 +8,6 @@ public class GUI {
   private static int TABLE_HEIGHT = 500;
   static JFrame frame;
   static JPanel root;
-
 
   public static void createGui(){
     MainUI ui = new MainUI();
@@ -23,7 +19,6 @@ public class GUI {
     frame.setLocationRelativeTo(null);
     frame.setSize(TABLE_WIDTH, TABLE_HEIGHT);
     frame.setVisible(true);
-    createMenu();
   }
 
 
