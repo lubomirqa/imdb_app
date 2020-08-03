@@ -1,0 +1,10 @@
+*.DS_Store
+.idea
+*.iml
+target
+downloads
+.log
+workspace.xml
+/out/
+OOP_Coursework.iml
+.txt
