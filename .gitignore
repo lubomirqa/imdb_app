@@ -8,3 +8,4 @@ workspace.xml
 /out/
 OOP_Coursework.iml
 movies.txt
+.gitignore
