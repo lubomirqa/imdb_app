@@ -256,12 +256,12 @@ public class MainUI extends GUI{
 
     try {
       ((DefaultTableModel) userTable.getModel()).removeRow(userTable.getSelectedRow());
+      removedMovies++;
+      model.setRowCount(userTable.getRowCount() - removedMovies);
+      countMovies();
     } catch(ArrayIndexOutOfBoundsException e){
       JOptionPane.showMessageDialog(null, "Row not selected");
     }
-    removedMovies++;
-    model.setRowCount(userTable.getRowCount() - removedMovies);
-    countMovies();
   }
 
   private void saveFile(){
