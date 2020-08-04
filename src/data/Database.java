@@ -93,7 +93,6 @@ public class Database {
       stmt.setString(3, genre);
       ResultSet result = stmt.executeQuery();
       while(result.next()){
-        //primaryTitle, startYear, averageRating, numVotes
         movies.add(new Movie(result.getString("primaryTitle"),
                 result.getInt("startYear"),
                 result.getFloat("averageRating"),
@@ -119,7 +118,6 @@ public class Database {
       stmt.setString(4, genre);
       ResultSet result = stmt.executeQuery();
       while(result.next()){
-        //primaryTitle, startYear, averageRating, numVotes
         movies.add(new Movie(result.getString("primaryTitle"),
                         result.getInt("startYear"),
                         result.getFloat("averageRating"),
