@@ -10,12 +10,10 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.event.*;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.ArrayList;
 
-public class MainUI extends GUI{
+public class MainUI extends GUI {
   protected JPanel rootPanel;
   private JLabel tableLabel;
   private JComboBox genreDropdown;
@@ -42,13 +40,14 @@ public class MainUI extends GUI{
   ArrayList<Movie> movies;
   ArrayList<Movie> userMovies;
   private int removedMovies;
+  private JFileChooser fc;
 
 
-  public JPanel getRootPanel(){
+  public JPanel getRootPanel() {
     return rootPanel;
   }
 
-  public MainUI(){
+  public MainUI() {
     createGenresDropdown();
     createMovieTypesDropdown();
     createSearch();
@@ -60,6 +59,7 @@ public class MainUI extends GUI{
     createUserTable();
     showMovies();
     saveFile();
+    openFile();
     userMovies = new ArrayList<>();
     removeMovie();
     createUserRow();
@@ -77,7 +77,7 @@ public class MainUI extends GUI{
 
   }
 
-  private void createMinVotesField(){
+  private void createMinVotesField() {
     minVotes.getDocument().addDocumentListener(new DocumentListener() {
       @Override
       public void insertUpdate(DocumentEvent e) {
@@ -96,7 +96,7 @@ public class MainUI extends GUI{
     });
   }
 
-  private void createShowCountField(){
+  private void createShowCountField() {
     showNumberField.getDocument().addDocumentListener(new DocumentListener() {
       @Override
       public void insertUpdate(DocumentEvent e) {
@@ -115,37 +115,37 @@ public class MainUI extends GUI{
     });
   }
 
-  private void createGenresDropdown(){
+  private void createGenresDropdown() {
     ArrayList<Genre> genres = Genre.getAllGenres();
-    for(Genre genre : genres){
+    for (Genre genre : genres) {
       genreDropdown.addItem(genre.getName());
     }
 
     genreDropdown.addItemListener(new ItemListener() {
       @Override
       public void itemStateChanged(ItemEvent e) {
-        if(e.getStateChange() == ItemEvent.DESELECTED);
+        if (e.getStateChange() == ItemEvent.DESELECTED) ;
         showMovies();
       }
     });
   }
 
-  private void createMovieTypesDropdown(){
+  private void createMovieTypesDropdown() {
     ArrayList<MovieType> types = MovieType.getAllMovieTypes();
-    for(MovieType type : types){
+    for (MovieType type : types) {
       typesDropdown.addItem(type.getName());
     }
 
     typesDropdown.addItemListener(new ItemListener() {
       @Override
       public void itemStateChanged(ItemEvent e) {
-        if(e.getStateChange() == ItemEvent.DESELECTED);
+        if (e.getStateChange() == ItemEvent.DESELECTED) ;
         showMovies();
       }
     });
   }
 
-  private void createSearch(){
+  private void createSearch() {
     searchButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -154,7 +154,7 @@ public class MainUI extends GUI{
     });
   }
 
-  private void createUserTable(){
+  private void createUserTable() {
     addAllButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -163,7 +163,7 @@ public class MainUI extends GUI{
     });
   }
 
-  private void createUserRow(){
+  private void createUserRow() {
     addButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -172,7 +172,7 @@ public class MainUI extends GUI{
     });
   }
 
-  private void createSearchKey(){
+  private void createSearchKey() {
     searchField.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -181,16 +181,16 @@ public class MainUI extends GUI{
     });
   }
 
-  private void showMovies(){
+  private void showMovies() {
     Integer showCount = Integer.parseInt(showNumberField.getText());
     Integer minMovies = Integer.parseInt(minVotes.getText());
     String titleType = (String) typesDropdown.getSelectedItem();
     String genre = (String) genreDropdown.getSelectedItem();
     movies = Movie.findMovies(showCount, minMovies, titleType, genre);
-    DefaultTableModel model = (DefaultTableModel)movieTable.getModel();
+    DefaultTableModel model = (DefaultTableModel) movieTable.getModel();
 
     model.setRowCount(0);
-    for(Movie movie : movies){
+    for (Movie movie : movies) {
       model.addRow(new Object[]{
               movie.getPrimaryTitle(),
               movie.getAverageRating(),
@@ -200,13 +200,13 @@ public class MainUI extends GUI{
     }
   }
 
-  private void showUserMovies(){
+  private void showUserMovies() {
     addMovies();
 
-    DefaultTableModel model = (DefaultTableModel)userTable.getModel();
+    DefaultTableModel model = (DefaultTableModel) userTable.getModel();
 
     model.setRowCount(0);
-    for(Movie movie : userMovies){
+    for (Movie movie : userMovies) {
       model.addRow(new Object[]{
               movie.getPrimaryTitle(),
               movie.getAverageRating(),
@@ -217,13 +217,13 @@ public class MainUI extends GUI{
     countMovies();
   }
 
-  private void showUserRow(){
+  private void showUserRow() {
     addMovie();
 
-    DefaultTableModel model = (DefaultTableModel)userTable.getModel();
+    DefaultTableModel model = (DefaultTableModel) userTable.getModel();
 
     model.setRowCount(0);
-    for(Movie movie : userMovies){
+    for (Movie movie : userMovies) {
       model.addRow(new Object[]{
               movie.getPrimaryTitle(),
               movie.getAverageRating(),
@@ -234,17 +234,17 @@ public class MainUI extends GUI{
     countMovies();
   }
 
-  private void showAllMovies(){
+  private void showAllMovies() {
     Integer showCount = Integer.parseInt(showNumberField.getText());
     String title = searchField.getText();
     Integer minMovies = Integer.parseInt(minVotes.getText());
     String titleType = (String) typesDropdown.getSelectedItem();
     String genre = (String) genreDropdown.getSelectedItem();
     movies = Movie.findMovies(showCount, title, minMovies, titleType, genre);
-    DefaultTableModel model = (DefaultTableModel)movieTable.getModel();
+    DefaultTableModel model = (DefaultTableModel) movieTable.getModel();
 
     model.setRowCount(0);
-    for(Movie movie : movies){
+    for (Movie movie : movies) {
       model.addRow(new Object[]{
               movie.getPrimaryTitle(),
               movie.getAverageRating(),
@@ -254,13 +254,13 @@ public class MainUI extends GUI{
     }
   }
 
-  private void addMovies(){
-    for(int i = 0; i < movies.size(); i++){
+  private void addMovies() {
+    for (int i = 0; i < movies.size(); i++) {
       userMovies.add(movies.get(i));
     }
   }
 
-  private void removeMovie(){
+  private void removeMovie() {
     removeButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -269,28 +269,33 @@ public class MainUI extends GUI{
     });
   }
 
-  private void addMovie(){
+  private void addMovie() {
     try {
       userMovies.add(movies.get(movieTable.getSelectedRow()));
-    } catch(ArrayIndexOutOfBoundsException e){
+    } catch (ArrayIndexOutOfBoundsException e) {
       JOptionPane.showMessageDialog(null, "Row not selected");
     }
   }
 
-  private void removeRow(){
-    DefaultTableModel model = (DefaultTableModel)movieTable.getModel();
+  private void removeRow() {
+    DefaultTableModel model = (DefaultTableModel) userTable.getModel();
 
     try {
-      ((DefaultTableModel) userTable.getModel()).removeRow(userTable.getSelectedRow());
+      model.removeRow(userTable.getSelectedRow());
       removedMovies++;
       model.setRowCount(userTable.getRowCount() - removedMovies);
       countMovies();
-    } catch(ArrayIndexOutOfBoundsException e){
+    } catch (ArrayIndexOutOfBoundsException e) {
       JOptionPane.showMessageDialog(null, "Row not selected");
     }
   }
 
-  private void saveFile(){
+  private void countMovies() {
+    String count = String.valueOf(userMovies.size() - removedMovies);
+    totalMoviesCount.setText(count);
+  }
+
+  private void saveFile() {
     saveButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -302,7 +307,7 @@ public class MainUI extends GUI{
           FileWriter fw = new FileWriter(file.getAbsoluteFile());
           BufferedWriter bw = new BufferedWriter(fw);
 
-          for(int i = 0; i < (movies.size()); i++){
+          for (int i = 0; i < (userMovies.size()); i++) {
             bw.write(userMovies.get(i).getPrimaryTitle() + "/");
             bw.write(userMovies.get(i).getAverageRating().toString() + "/");
             bw.write(userMovies.get(i).getStartYear().toString() + "/");
@@ -312,16 +317,69 @@ public class MainUI extends GUI{
           fw.close();
           JOptionPane.showMessageDialog(null, "Data exported");
 
-        } catch(Exception ex){
+        } catch (Exception ex) {
           ex.printStackTrace();
         }
       }
     });
   }
 
-  private void countMovies(){
-    String count = String.valueOf(userMovies.size() - removedMovies);
-    totalMoviesCount.setText(count);
+  private void openFile() {
+    openButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        fc = new JFileChooser();
+        fc.setCurrentDirectory(new File("."));
+        fc.setDialogTitle("Choose a file with movies");
+        fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+
+        if (fc.showOpenDialog(openButton) == JFileChooser.APPROVE_OPTION) {
+          //
+        }
+
+        String filePath = fc.getSelectedFile().getAbsolutePath();
+        File file = new File(filePath);
+
+        try {
+          BufferedReader br = new BufferedReader(new FileReader(file));
+          DefaultTableModel model = (DefaultTableModel) userTable.getModel();
+          while (model.getRowCount() > 0) {
+            model.removeRow(0);
+          }
+          Object[] tableLines = br.lines().toArray();
+
+          userMovies = new ArrayList<>();
+
+          Movie moviee = new Movie(null, null, null, null);
+
+          for(int i = 0; i < tableLines.length; i++){
+            userMovies.add(moviee);
+          }
+
+          for (int i = 0; i < tableLines.length; i++) {
+            String line = tableLines[i].toString().trim();
+            String[] dataRow = line.split("/");
+            model.addRow(dataRow);
+            userMovies.get(i).setPrimaryTitle(dataRow[0]);
+            userMovies.get(i).setAverageRating(Float.parseFloat(dataRow[1]));
+            userMovies.get(i).setStartYear(Integer.parseInt(dataRow[2]));
+            userMovies.get(i).setNumVotes(Integer.parseInt(dataRow[3]));
+          }
+
+          //
+          System.out.println("tableLines length = " + tableLines.length);
+          System.out.println(userMovies.get(0).getPrimaryTitle());
+          System.out.println("userMovies size = " + userMovies.size());
+          //
+
+          countMovies();
+
+        } catch (Exception ex) {
+          ex.printStackTrace();
+        }
+
+      }
+    });
   }
 
 }
