@@ -35,14 +35,10 @@ public class MainUI extends GUI{
   private JButton addAllButton;
   private JLabel totalField;
   private JLabel totalMoviesCount;
-  private JLabel userGenreFIeld;
-  private JComboBox userGenreFilter;
-  private JLabel userTypeLabel;
-  private JComboBox userTypeFilter;
-  private JTextField userSearchField;
-  private JButton userSearchLabel;
   private JLabel moviesNumberLabel;
   private JTextField showNumberField;
+  private JButton userSearchButton;
+  private JTextField userSearchField;
   ArrayList<Movie> movies;
   ArrayList<Movie> userMovies;
   private int removedMovies;
