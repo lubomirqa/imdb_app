@@ -8,6 +8,7 @@ public class Movie {
   private Integer startYear;
   private Float averageRating;
   private Integer numVotes;
+  private Integer showCount;
 
   public Movie(String pt, Integer sy, Float ar, Integer nv){
     primaryTitle = pt;
@@ -16,12 +17,12 @@ public class Movie {
     numVotes = nv;
   }
 
-  public static ArrayList<Movie> findMovies(Integer minMovies, String titleType, String genre){
-    return Database.findMovies(minMovies, titleType, genre);
+  public static ArrayList<Movie> findMovies(Integer showCount, Integer minMovies, String titleType, String genre){
+    return Database.findMovies(showCount, minMovies, titleType, genre);
   }
 
-  public static ArrayList<Movie> findMovies(String title, Integer minMovies, String titleType, String genre){
-    return Database.findMovies(title, minMovies, titleType, genre);
+  public static ArrayList<Movie> findMovies(Integer showCount, String title, Integer minMovies, String titleType, String genre){
+    return Database.findMovies(showCount, title, minMovies, titleType, genre);
   }
 
   public String getPrimaryTitle() {
@@ -54,5 +55,13 @@ public class Movie {
 
   public void setNumVotes(Integer numVotes) {
     this.numVotes = numVotes;
+  }
+
+  public Integer getShowCount() {
+    return showCount;
+  }
+
+  public void setShowCount(Integer showCount) {
+    this.showCount = showCount;
   }
 }

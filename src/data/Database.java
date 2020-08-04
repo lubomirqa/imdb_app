@@ -17,7 +17,7 @@ public class Database {
   private static String GET_ALL_GENRES_SQL = "SELECT DISTINCT RTRIM(genre) AS genre FROM title_genre";
   private static String GET_ALL_TYPES_SQL = "SELECT DISTINCT RTRIM(titleType) AS titleType FROM title_basics";
 
-  private static String FIND_MOVIES_SQL = "SELECT TOP 50 primaryTitle, startYear, averageRating, numVotes\n" +
+  private static String FIND_MOVIES_SQL = "SELECT TOP (?) primaryTitle, startYear, averageRating, numVotes\n" +
           "FROM title_basics\n" +
           "JOIN title_ratings ON title_basics.tconst = title_ratings.tconst\n" +
           "JOIN title_genre ON title_basics.tconst = title_genre.tconst\n" +
@@ -26,7 +26,7 @@ public class Database {
           "AND genre = ?\n" +
           "ORDER BY averageRating DESC";
 
-  private static String SEARCH_ALL_BY_NAME_SQL = "SELECT DISTINCT TOP 50 primaryTitle, startYear, averageRating, numVotes\n" +
+  private static String SEARCH_ALL_BY_NAME_SQL = "SELECT DISTINCT TOP (?) primaryTitle, startYear, averageRating, numVotes\n" +
           "FROM title_basics\n" +
           "JOIN title_ratings ON title_basics.tconst = title_ratings.tconst\n" +
           "JOIN title_genre ON title_basics.tconst = title_genre.tconst\n" +
@@ -82,18 +82,20 @@ public class Database {
     return types;
   }
 
-  public static ArrayList<Movie> findMovies(Integer minMovies, String titleType, String genre){
+  public static ArrayList<Movie> findMovies(Integer showCount, Integer minMovies, String titleType, String genre){
     connect();
     ArrayList<Movie> movies = new ArrayList<>();
 
     try {
       PreparedStatement stmt = connection.prepareStatement(FIND_MOVIES_SQL);
-      stmt.setInt(1, minMovies);
-      stmt.setString(2, titleType);
-      stmt.setString(3, genre);
+      stmt.setInt(1, showCount);
+      stmt.setInt(2, minMovies);
+      stmt.setString(3, titleType);
+      stmt.setString(4, genre);
       ResultSet result = stmt.executeQuery();
       while(result.next()){
-        movies.add(new Movie(result.getString("primaryTitle"),
+        movies.add(new Movie(
+                result.getString("primaryTitle"),
                 result.getInt("startYear"),
                 result.getFloat("averageRating"),
                 result.getInt("numVotes")
@@ -106,19 +108,21 @@ public class Database {
     return movies;
   }
 
-  public static ArrayList<Movie> findMovies(String title, Integer minMovies, String titleType, String genre){
+  public static ArrayList<Movie> findMovies(Integer showCount, String title, Integer minMovies, String titleType, String genre){
     connect();
     ArrayList<Movie> movies = new ArrayList<>();
 
     try {
       PreparedStatement stmt = connection.prepareStatement(SEARCH_ALL_BY_NAME_SQL);
-      stmt.setString(1, title);
-      stmt.setInt(2, minMovies);
-      stmt.setString(3, titleType);
-      stmt.setString(4, genre);
+      stmt.setInt(1, showCount);
+      stmt.setString(2, title);
+      stmt.setInt(3, minMovies);
+      stmt.setString(4, titleType);
+      stmt.setString(5, genre);
       ResultSet result = stmt.executeQuery();
       while(result.next()){
-        movies.add(new Movie(result.getString("primaryTitle"),
+        movies.add(new Movie(
+                        result.getString("primaryTitle"),
                         result.getInt("startYear"),
                         result.getFloat("averageRating"),
                         result.getInt("numVotes")

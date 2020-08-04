@@ -41,6 +41,8 @@ public class MainUI extends GUI{
   private JComboBox userTypeFilter;
   private JTextField userSearchField;
   private JButton userSearchLabel;
+  private JLabel moviesNumberLabel;
+  private JTextField showNumberField;
   ArrayList<Movie> movies;
   ArrayList<Movie> userMovies;
   private int removedMovies;
@@ -56,6 +58,7 @@ public class MainUI extends GUI{
     createSearch();
     createSearchKey();
     createMinVotesField();
+    createShowCountField();
     createTable(movieTable);
     createTable(userTable);
     createUserTable();
@@ -80,6 +83,25 @@ public class MainUI extends GUI{
 
   private void createMinVotesField(){
     minVotes.getDocument().addDocumentListener(new DocumentListener() {
+      @Override
+      public void insertUpdate(DocumentEvent e) {
+        showMovies();
+      }
+
+      @Override
+      public void removeUpdate(DocumentEvent e) {
+        showMovies();
+      }
+
+      @Override
+      public void changedUpdate(DocumentEvent e) {
+        showMovies();
+      }
+    });
+  }
+
+  private void createShowCountField(){
+    showNumberField.getDocument().addDocumentListener(new DocumentListener() {
       @Override
       public void insertUpdate(DocumentEvent e) {
         showMovies();
@@ -164,10 +186,11 @@ public class MainUI extends GUI{
   }
 
   private void showMovies(){
+    Integer showCount = Integer.parseInt(showNumberField.getText());
     Integer minMovies = Integer.parseInt(minVotes.getText());
     String titleType = (String) typesDropdown.getSelectedItem();
     String genre = (String) genreDropdown.getSelectedItem();
-    movies = Movie.findMovies(minMovies, titleType, genre);
+    movies = Movie.findMovies(showCount, minMovies, titleType, genre);
     DefaultTableModel model = (DefaultTableModel)movieTable.getModel();
 
     model.setRowCount(0);
@@ -216,11 +239,12 @@ public class MainUI extends GUI{
   }
 
   private void showAllMovies(){
+    Integer showCount = Integer.parseInt(showNumberField.getText());
     String title = searchField.getText();
     Integer minMovies = Integer.parseInt(minVotes.getText());
     String titleType = (String) typesDropdown.getSelectedItem();
     String genre = (String) genreDropdown.getSelectedItem();
-    movies = Movie.findMovies(title, minMovies, titleType, genre);
+    movies = Movie.findMovies(showCount, title, minMovies, titleType, genre);
     DefaultTableModel model = (DefaultTableModel)movieTable.getModel();
 
     model.setRowCount(0);

@@ -106,7 +106,7 @@
               </component>
             </children>
           </grid>
-          <grid id="f09c0" layout-manager="GridLayoutManager" row-count="1" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="f09c0" layout-manager="GridLayoutManager" row-count="1" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="5" left="10" bottom="5" right="10"/>
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -127,9 +127,9 @@
               <component id="933ea" class="javax.swing.JTextField" binding="minVotes">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                    <minimum-size width="120" height="-1"/>
-                    <preferred-size width="120" height="-1"/>
-                    <maximum-size width="120" height="-1"/>
+                    <minimum-size width="100" height="-1"/>
+                    <preferred-size width="100" height="-1"/>
+                    <maximum-size width="100" height="-1"/>
                   </grid>
                 </constraints>
                 <properties>
@@ -138,9 +138,9 @@
               </component>
               <component id="6f2e4" class="javax.swing.JTextField" binding="searchField">
                 <constraints>
-                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="4" fill="0" indent="0" use-parent-layout="false">
-                    <preferred-size width="120" height="-1"/>
-                    <maximum-size width="120" height="-1"/>
+                  <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="4" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="100" height="-1"/>
+                    <maximum-size width="100" height="-1"/>
                   </grid>
                 </constraints>
                 <properties>
@@ -149,13 +149,33 @@
               </component>
               <component id="7a07f" class="javax.swing.JButton" binding="searchButton">
                 <constraints>
-                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                  <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="75" height="-1"/>
                     <maximum-size width="75" height="-1"/>
                   </grid>
                 </constraints>
                 <properties>
                   <text value="Search"/>
+                </properties>
+              </component>
+              <component id="6bd2e" class="javax.swing.JLabel" binding="moviesNumberLabel">
+                <constraints>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Show"/>
+                  <toolTipText value="How many movies to show"/>
+                </properties>
+              </component>
+              <component id="f2fe5" class="javax.swing.JTextField" binding="showNumberField">
+                <constraints>
+                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="100" height="-1"/>
+                    <maximum-size width="100" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value="50"/>
                 </properties>
               </component>
             </children>
@@ -235,12 +255,12 @@
               <component id="83deb" class="javax.swing.JLabel" binding="totalField">
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                    <preferred-size width="160" height="-1"/>
-                    <maximum-size width="160" height="-1"/>
+                    <preferred-size width="100" height="-1"/>
+                    <maximum-size width="100" height="-1"/>
                   </grid>
                 </constraints>
                 <properties>
-                  <text value="Total movies count:"/>
+                  <text value="Total movies:"/>
                 </properties>
               </component>
               <component id="e4a55" class="javax.swing.JLabel" binding="totalMoviesCount">
@@ -305,8 +325,8 @@
               <component id="115ea" class="javax.swing.JTextField" binding="userSearchField">
                 <constraints>
                   <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="4" fill="2" indent="0" use-parent-layout="false">
-                    <preferred-size width="120" height="-1"/>
-                    <maximum-size width="120" height="-1"/>
+                    <preferred-size width="100" height="-1"/>
+                    <maximum-size width="100" height="-1"/>
                   </grid>
                 </constraints>
                 <properties/>
