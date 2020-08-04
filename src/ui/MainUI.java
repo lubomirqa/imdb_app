@@ -33,8 +33,11 @@ public class MainUI extends GUI{
   private JButton saveButton;
   private JButton openButton;
   private JButton addAllButton;
+  private JLabel totalField;
+  private JLabel totalMoviesCount;
   ArrayList<Movie> movies;
   ArrayList<Movie> userMovies;
+  private int removedMovies;
 
 
   public JPanel getRootPanel(){
@@ -186,6 +189,7 @@ public class MainUI extends GUI{
               movie.getNumVotes()
       });
     }
+    countMovies();
   }
 
   private void showUserRow(){
@@ -202,6 +206,7 @@ public class MainUI extends GUI{
               movie.getNumVotes()
       });
     }
+    countMovies();
   }
 
   private void showAllMovies(){
@@ -247,11 +252,16 @@ public class MainUI extends GUI{
   }
 
   private void removeRow(){
+    DefaultTableModel model = (DefaultTableModel)movieTable.getModel();
+
     try {
       ((DefaultTableModel) userTable.getModel()).removeRow(userTable.getSelectedRow());
     } catch(ArrayIndexOutOfBoundsException e){
       JOptionPane.showMessageDialog(null, "Row not selected");
     }
+    removedMovies++;
+    model.setRowCount(userTable.getRowCount() - removedMovies);
+    countMovies();
   }
 
   private void saveFile(){
@@ -283,6 +293,9 @@ public class MainUI extends GUI{
     });
   }
 
-
+  private void countMovies(){
+    String count = String.valueOf(userMovies.size() - removedMovies);
+    totalMoviesCount.setText(count);
+  }
 
 }
