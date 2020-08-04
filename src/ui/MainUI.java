@@ -12,6 +12,8 @@ import javax.swing.table.TableColumnModel;
 import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class MainUI extends GUI {
   protected JPanel rootPanel;
@@ -220,9 +222,13 @@ public class MainUI extends GUI {
   private void showUserRow() {
     addMovie();
 
-    DefaultTableModel model = (DefaultTableModel) userTable.getModel();
+    System.out.println("userMovies before adding size = " + userMovies.size());
+    System.out.println("userMovies before adding 1st title = " + userMovies.get(0).getPrimaryTitle());
+    System.out.println("userMovies before adding 2nd title = " + userMovies.get(1).getPrimaryTitle());
 
+    DefaultTableModel model = (DefaultTableModel) userTable.getModel();
     model.setRowCount(0);
+
     for (Movie movie : userMovies) {
       model.addRow(new Object[]{
               movie.getPrimaryTitle(),
@@ -231,6 +237,11 @@ public class MainUI extends GUI {
               movie.getNumVotes()
       });
     }
+
+    System.out.println("userMovies after adding size = " + userMovies.size());
+    System.out.println("userMovies after adding 1st title = " + userMovies.get(0).getPrimaryTitle());
+    System.out.println("userMovies after adding 2nd title = " + userMovies.get(1).getPrimaryTitle());
+
     countMovies();
   }
 
@@ -348,27 +359,25 @@ public class MainUI extends GUI {
           }
           Object[] tableLines = br.lines().toArray();
 
-          userMovies = new ArrayList<>();
+          userMovies = new ArrayList<>(tableLines.length);
 
-          Movie moviee = new Movie(null, null, null, null);
-
-          for(int i = 0; i < tableLines.length; i++){
-            userMovies.add(moviee);
-          }
+          System.out.println("userMovies size before the loop = " + userMovies.size());
 
           for (int i = 0; i < tableLines.length; i++) {
             String line = tableLines[i].toString().trim();
             String[] dataRow = line.split("/");
+
+            Movie movie = new Movie(dataRow[0], Integer.parseInt(dataRow[2]), Float.parseFloat(dataRow[1]), Integer.parseInt(dataRow[3]));
+
             model.addRow(dataRow);
-            userMovies.get(i).setPrimaryTitle(dataRow[0]);
-            userMovies.get(i).setAverageRating(Float.parseFloat(dataRow[1]));
-            userMovies.get(i).setStartYear(Integer.parseInt(dataRow[2]));
-            userMovies.get(i).setNumVotes(Integer.parseInt(dataRow[3]));
+            userMovies.add(movie);
           }
 
           //
           System.out.println("tableLines length = " + tableLines.length);
           System.out.println(userMovies.get(0).getPrimaryTitle());
+          System.out.println("prelast title = " + userMovies.get(userMovies.size()-2).getPrimaryTitle());
+          System.out.println("last title = " + userMovies.get(userMovies.size()-1).getPrimaryTitle());
           System.out.println("userMovies size = " + userMovies.size());
           //
 
