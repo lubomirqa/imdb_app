@@ -269,7 +269,7 @@ public class MainUI extends GUI{
       @Override
       public void actionPerformed(ActionEvent e) {
         try {
-          File file = new File("/Users/mac/imdb_app/lib/movies.txt");
+          File file = new File(System.getProperty("user.dir") + "/lib/movies.txt");
           if (!file.exists()) {
             file.createNewFile();
           }
