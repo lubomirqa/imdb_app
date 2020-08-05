@@ -12,8 +12,6 @@ import javax.swing.table.TableColumnModel;
 import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 public class MainUI extends GUI {
   protected JPanel rootPanel;
@@ -43,6 +41,8 @@ public class MainUI extends GUI {
   ArrayList<Movie> userMovies;
   private int removedMovies;
   private JFileChooser fc;
+  private DefaultTableModel userModel;
+  private boolean uploaded = false;
 
 
   public JPanel getRootPanel() {
@@ -65,6 +65,7 @@ public class MainUI extends GUI {
     userMovies = new ArrayList<>();
     removeMovie();
     createUserRow();
+    userModel = (DefaultTableModel) userTable.getModel();
   }
 
   private void createTable(JTable table) {
@@ -205,32 +206,26 @@ public class MainUI extends GUI {
   private void showUserMovies() {
     addMovies();
 
-    DefaultTableModel model = (DefaultTableModel) userTable.getModel();
-
-    model.setRowCount(0);
+    userModel.setRowCount(0);
     for (Movie movie : userMovies) {
-      model.addRow(new Object[]{
+      userModel.addRow(new Object[]{
               movie.getPrimaryTitle(),
               movie.getAverageRating(),
               movie.getStartYear(),
               movie.getNumVotes()
       });
     }
-    countMovies();
+    userModel.setRowCount(userModel.getRowCount());
+    totalMoviesCount.setText(String.valueOf(userModel.getRowCount()));
   }
 
   private void showUserRow() {
     addMovie();
 
-    System.out.println("userMovies before adding size = " + userMovies.size());
-    System.out.println("userMovies before adding 1st title = " + userMovies.get(0).getPrimaryTitle());
-    System.out.println("userMovies before adding 2nd title = " + userMovies.get(1).getPrimaryTitle());
-
-    DefaultTableModel model = (DefaultTableModel) userTable.getModel();
-    model.setRowCount(0);
+    userModel.setRowCount(0);
 
     for (Movie movie : userMovies) {
-      model.addRow(new Object[]{
+      userModel.addRow(new Object[]{
               movie.getPrimaryTitle(),
               movie.getAverageRating(),
               movie.getStartYear(),
@@ -238,9 +233,7 @@ public class MainUI extends GUI {
       });
     }
 
-    System.out.println("userMovies after adding size = " + userMovies.size());
-    System.out.println("userMovies after adding 1st title = " + userMovies.get(0).getPrimaryTitle());
-    System.out.println("userMovies after adding 2nd title = " + userMovies.get(1).getPrimaryTitle());
+    userModel.setRowCount(userModel.getRowCount());
 
     countMovies();
   }
@@ -289,12 +282,13 @@ public class MainUI extends GUI {
   }
 
   private void removeRow() {
-    DefaultTableModel model = (DefaultTableModel) userTable.getModel();
-
     try {
-      model.removeRow(userTable.getSelectedRow());
+      int rowIndex = userTable.getSelectedRow();
+      userMovies.remove(rowIndex);
+
+      userModel.removeRow(userTable.getSelectedRow());
       removedMovies++;
-      model.setRowCount(userTable.getRowCount() - removedMovies);
+      userModel.setRowCount(userTable.getRowCount());
       countMovies();
     } catch (ArrayIndexOutOfBoundsException e) {
       JOptionPane.showMessageDialog(null, "Row not selected");
@@ -302,8 +296,7 @@ public class MainUI extends GUI {
   }
 
   private void countMovies() {
-    String count = String.valueOf(userMovies.size() - removedMovies);
-    totalMoviesCount.setText(count);
+      totalMoviesCount.setText(String.valueOf(userModel.getRowCount()));
   }
 
   private void saveFile() {
@@ -345,7 +338,6 @@ public class MainUI extends GUI {
         fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
         if (fc.showOpenDialog(openButton) == JFileChooser.APPROVE_OPTION) {
-          //
         }
 
         String filePath = fc.getSelectedFile().getAbsolutePath();
@@ -361,8 +353,6 @@ public class MainUI extends GUI {
 
           userMovies = new ArrayList<>(tableLines.length);
 
-          System.out.println("userMovies size before the loop = " + userMovies.size());
-
           for (int i = 0; i < tableLines.length; i++) {
             String line = tableLines[i].toString().trim();
             String[] dataRow = line.split("/");
@@ -373,20 +363,12 @@ public class MainUI extends GUI {
             userMovies.add(movie);
           }
 
-          //
-          System.out.println("tableLines length = " + tableLines.length);
-          System.out.println(userMovies.get(0).getPrimaryTitle());
-          System.out.println("prelast title = " + userMovies.get(userMovies.size()-2).getPrimaryTitle());
-          System.out.println("last title = " + userMovies.get(userMovies.size()-1).getPrimaryTitle());
-          System.out.println("userMovies size = " + userMovies.size());
-          //
-
           countMovies();
+          uploaded = true;
 
         } catch (Exception ex) {
           ex.printStackTrace();
         }
-
       }
     });
   }
