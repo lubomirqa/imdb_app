@@ -12,6 +12,7 @@ import javax.swing.table.TableColumnModel;
 import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainUI extends GUI {
   protected JPanel rootPanel;
@@ -35,8 +36,10 @@ public class MainUI extends GUI {
   private JLabel totalMoviesCount;
   private JLabel moviesNumberLabel;
   private JTextField showNumberField;
-  private JButton userSearchButton;
-  private JTextField userSearchField;
+  private JLabel yearLabel;
+  private JComboBox yearDropdown;
+  private JButton discardButton;
+  private JLabel Year;
   ArrayList<Movie> movies;
   ArrayList<Movie> userMovies;
   private int removedMovies;
@@ -52,6 +55,8 @@ public class MainUI extends GUI {
   public MainUI() {
     createGenresDropdown();
     createMovieTypesDropdown();
+    createYearDropdown();
+    discardYearFilter();
     createSearch();
     createSearchKey();
     createMinVotesField();
@@ -148,6 +153,41 @@ public class MainUI extends GUI {
     });
   }
 
+  private void createYearDropdown(){
+    int year = Calendar.getInstance().get(Calendar.YEAR);
+    for(int i = year; i >= 1900; i--){
+      yearDropdown.addItem(i);
+    }
+
+    yearDropdown.addItemListener(new ItemListener() {
+      @Override
+      public void itemStateChanged(ItemEvent e) {
+        if (e.getStateChange() == ItemEvent.DESELECTED);
+          filterByYear();
+      }
+    });
+  }
+
+  private void filterByYear(){
+    Object derivedYear = yearDropdown.getSelectedItem();
+    int year = (int) derivedYear;
+
+    userModel.setRowCount(0);
+
+    for(Movie movie : userMovies){
+      if(movie.getStartYear() == year){
+        userModel.addRow(new Object[]{
+                movie.getPrimaryTitle(),
+                movie.getAverageRating(),
+                movie.getStartYear(),
+                movie.getNumVotes()
+        });
+      }
+    }
+    userModel.setRowCount(userModel.getRowCount());
+    totalMoviesCount.setText(String.valueOf(userModel.getRowCount()));
+  }
+
   private void createSearch() {
     searchButton.addActionListener(new ActionListener() {
       @Override
@@ -219,6 +259,20 @@ public class MainUI extends GUI {
     totalMoviesCount.setText(String.valueOf(userModel.getRowCount()));
   }
 
+  private void showUserMoviesAfterFilter(){
+    userModel.setRowCount(0);
+    for (Movie movie : userMovies) {
+      userModel.addRow(new Object[]{
+              movie.getPrimaryTitle(),
+              movie.getAverageRating(),
+              movie.getStartYear(),
+              movie.getNumVotes()
+      });
+    }
+    userModel.setRowCount(userModel.getRowCount());
+    totalMoviesCount.setText(String.valueOf(userModel.getRowCount()));
+  }
+
   private void showUserRow() {
     addMovie();
 
@@ -262,6 +316,15 @@ public class MainUI extends GUI {
     for (int i = 0; i < movies.size(); i++) {
       userMovies.add(movies.get(i));
     }
+  }
+
+  private void discardYearFilter(){
+    discardButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        showUserMoviesAfterFilter();
+      }
+    });
   }
 
   private void removeMovie() {

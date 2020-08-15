@@ -4,8 +4,8 @@ import javax.swing.*;
 
 public class GUI {
 
-  private static int TABLE_WIDTH = 600;
-  private static int TABLE_HEIGHT = 500;
+  private static int TABLE_WIDTH = 650;
+  private static int TABLE_HEIGHT = 550;
   static JFrame frame;
   static JPanel root;
 
