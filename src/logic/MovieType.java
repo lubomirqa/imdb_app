@@ -4,8 +4,7 @@ import data.Database;
 
 import java.util.ArrayList;
 
-public class MovieType {
-  private String name;
+public class MovieType extends Feature{
 
   public MovieType(String s){
     name = s;
@@ -15,7 +14,4 @@ public class MovieType {
     return Database.getAllMovieTypes();
   }
 
-  public String getName() {
-    return name;
-  }
 }

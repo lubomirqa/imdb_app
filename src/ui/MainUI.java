@@ -233,42 +233,23 @@ public class MainUI extends GUI {
     DefaultTableModel model = (DefaultTableModel) movieTable.getModel();
 
     model.setRowCount(0);
-    for (Movie movie : movies) {
-      model.addRow(new Object[]{
-              movie.getPrimaryTitle(),
-              movie.getAverageRating(),
-              movie.getStartYear(),
-              movie.getNumVotes()
-      });
-    }
+    addMoviesToModel(model, movies);
   }
 
   private void showUserMovies() {
     addMovies();
 
     userModel.setRowCount(0);
-    for (Movie movie : userMovies) {
-      userModel.addRow(new Object[]{
-              movie.getPrimaryTitle(),
-              movie.getAverageRating(),
-              movie.getStartYear(),
-              movie.getNumVotes()
-      });
-    }
+    addMoviesToModel(userModel, userMovies);
+
     userModel.setRowCount(userModel.getRowCount());
     totalMoviesCount.setText(String.valueOf(userModel.getRowCount()));
   }
 
   private void showUserMoviesAfterFilter(){
     userModel.setRowCount(0);
-    for (Movie movie : userMovies) {
-      userModel.addRow(new Object[]{
-              movie.getPrimaryTitle(),
-              movie.getAverageRating(),
-              movie.getStartYear(),
-              movie.getNumVotes()
-      });
-    }
+    addMoviesToModel(userModel, userMovies);
+
     userModel.setRowCount(userModel.getRowCount());
     totalMoviesCount.setText(String.valueOf(userModel.getRowCount()));
   }
@@ -277,18 +258,9 @@ public class MainUI extends GUI {
     addMovie();
 
     userModel.setRowCount(0);
-
-    for (Movie movie : userMovies) {
-      userModel.addRow(new Object[]{
-              movie.getPrimaryTitle(),
-              movie.getAverageRating(),
-              movie.getStartYear(),
-              movie.getNumVotes()
-      });
-    }
+    addMoviesToModel(userModel, userMovies);
 
     userModel.setRowCount(userModel.getRowCount());
-
     countMovies();
   }
 
@@ -302,14 +274,7 @@ public class MainUI extends GUI {
     DefaultTableModel model = (DefaultTableModel) movieTable.getModel();
 
     model.setRowCount(0);
-    for (Movie movie : movies) {
-      model.addRow(new Object[]{
-              movie.getPrimaryTitle(),
-              movie.getAverageRating(),
-              movie.getStartYear(),
-              movie.getNumVotes()
-      });
-    }
+    addMoviesToModel(model, movies);
   }
 
   private void addMovies() {
@@ -434,6 +399,17 @@ public class MainUI extends GUI {
         }
       }
     });
+  }
+
+  private void addMoviesToModel(DefaultTableModel model, ArrayList<Movie> movies){
+    for (Movie movie : movies) {
+      model.addRow(new Object[]{
+              movie.getPrimaryTitle(),
+              movie.getAverageRating(),
+              movie.getStartYear(),
+              movie.getNumVotes()
+      });
+    }
   }
 
 }

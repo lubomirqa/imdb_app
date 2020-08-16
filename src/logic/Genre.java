@@ -3,8 +3,7 @@ package logic;
 import data.Database;
 import java.util.ArrayList;
 
-public class Genre {
-  private String name;
+public class Genre extends Feature{
 
   public Genre(String s){
     name = s;
@@ -12,10 +11,6 @@ public class Genre {
 
   public static ArrayList<Genre> getAllGenres(){
     return Database.getAllGenres();
-  }
-
-  public String getName() {
-    return name;
   }
 
 }
