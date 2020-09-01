@@ -46,10 +46,7 @@
             <children>
               <component id="ee02f" class="javax.swing.JComboBox" binding="genreDropdown">
                 <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                    <preferred-size width="100" height="-1"/>
-                    <maximum-size width="100" height="-1"/>
-                  </grid>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
               </component>
@@ -65,7 +62,7 @@
               </component>
               <component id="61f37" class="javax.swing.JButton" binding="addButton">
                 <constraints>
-                  <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false">
+                  <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
                     <maximum-size width="75" height="-1"/>
                   </grid>
                 </constraints>
@@ -75,7 +72,7 @@
               </component>
               <component id="c7877" class="javax.swing.JButton" binding="addAllButton">
                 <constraints>
-                  <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false">
+                  <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
                     <maximum-size width="75" height="-1"/>
                   </grid>
                 </constraints>
@@ -93,10 +90,7 @@
               </component>
               <component id="ff6e8" class="javax.swing.JComboBox" binding="typesDropdown" default-binding="true">
                 <constraints>
-                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="2" indent="0" use-parent-layout="false">
-                    <preferred-size width="100" height="-1"/>
-                    <maximum-size width="100" height="-1"/>
-                  </grid>
+                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="2" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
               </component>
@@ -133,7 +127,7 @@
               </component>
               <component id="6f2e4" class="javax.swing.JTextField" binding="searchField">
                 <constraints>
-                  <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="4" fill="0" indent="0" use-parent-layout="false">
+                  <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="100" height="-1"/>
                     <maximum-size width="100" height="-1"/>
                   </grid>

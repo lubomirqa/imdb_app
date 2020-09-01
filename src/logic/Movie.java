@@ -8,7 +8,6 @@ public class Movie {
   private Integer startYear;
   private Float averageRating;
   private Integer numVotes;
-  private Integer showCount;
 
   public Movie(String pt, Integer sy, Float ar, Integer nv){
     primaryTitle = pt;
@@ -55,13 +54,5 @@ public class Movie {
 
   public void setNumVotes(Integer numVotes) {
     this.numVotes = numVotes;
-  }
-
-  public Integer getShowCount() {
-    return showCount;
-  }
-
-  public void setShowCount(Integer showCount) {
-    this.showCount = showCount;
   }
 }
